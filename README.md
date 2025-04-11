@@ -218,7 +218,7 @@ avg_weighted_feature_importances = weighted_feature_importances_sums / len(seeds
 sorted_feature_importances = sorted(zip(X.columns, avg_weighted_feature_importances), key=lambda x: x[1], reverse=True)
 ```
 
-### 3.3.4 Result output
+### 3.3.4 Results output
 Finally, output the R2 and RMSE of each sub-model and the fusion model. Sort the feature importance of the weighted average output of the fusion model under the last 100 random seeds.
 ```python
 # Output the R2, RMSE of the fusion model and each sub-model and the sorted feature importance.
@@ -247,7 +247,7 @@ print(f"{feature}: {importance}")
 ```
 
 ## 3.4 Homogeneous integration of linear models 
-For the construction of descriptors，we identified the top-ranked features across different sites as strong correlation factors and used them to construct functional group indexes. We utilized six common linear models as sub-models: Linear Regression (LR), Ridge Regression (RR), Least Angle Regression (LAR), Elastic Net Regression (ENR), Partial Least Squares Regression (PLSR), and Support Vector Regression (SVR). Except for setting the kernel to linear in SVR, we retain the default values for all other hyperparameters (But we still reserve an interface to implement custom hyperparameters). The homogeneous integration process of linear models is similar to the above process. For details, see `linear_voting.py`.
+For the construction of descriptors，we identified the top-ranked features across different sites as strong correlation factors and used them to construct functional group indexes. We utilized six common linear models as sub-models: Linear Regression (LR), Ridge Regression (RR), Least Angle Regression (LAR), Elastic Net Regression (ENR), Partial Least Squares Regression (PLSR), and Support Vector Regression (SVR). Except for setting the kernel to linear in SVR, we retain the default values for all other hyperparameters (But we still reserve an interface to implement custom hyperparameters). The homogeneous integration process of linear models is similar to the above process. For details, see `linear_voting_tunning.py`，`linear_voting_ensemble.py`.
 
 # 4. Access
 Access the raw data and processed features [here]((https://github.com/terencetaothucb/TBSI-Sunwoda-Battery-Dataset)) under the [MIT licence](https://github.com/terencetaothucb/Pulse-Voltage-Response-Generation/blob/main/LICENSE). Correspondence to [Terence (Shengyu) Tao](terencetaotbsi@gmail.com) and CC Prof. [Xuan Zhang](xuanzhang@sz.tsinghua.edu.cn) and [Guangmin Zhou](guangminzhou@sz.tsinghua.edu.cn) when you use, or have any inquiries.
