@@ -13,7 +13,7 @@ Molecular mediators have demonstrated broad applicability in the electrolyte che
 * scipy=1.13.1pandas=2.2.2
 
 # 2. Datasets
-* Raw and processed datasets have been deposited in TBSI-Sunwoda-Battery-Dataset, which can be accessed at [TBSI-Sunwoda-Battery-Dataset](https://github.com/terencetaothucb/TBSI-Sunwoda-Battery-Dataset).Raw and processed datasets have been deposited in TBSI-molecular-skeleton-Dataset, which can be accessed at [[TBSI-Sunwoda-Battery-Dataset]](https://github.com/terencetaothucb/TBSI-Sunwoda-Battery-Dataset).
+* Raw and processed datasets have been deposited in `Molecular dual-target values dataset.xlsx`，`Functional group features`, which can be accessed at this page.
 
 # 3. Experiment
 ## 3.1 Overview
