@@ -19,9 +19,9 @@ Molecular mediators have demonstrated broad applicability in the electrolyte che
 ## 3.1 Overview
 The main workflow includes the construction of two types of homogeneous ensemble models (including six tree models or six linear models) and the calculation of the multi-model strongly physically meaningful weighted average feature importance.
 ## 3.2 Construction of chemical space
- We employed artificial random sampling to generate a library of 35 non-repetitive CPyr-based molecules (dataset1) from a 196-sample-space considering 7 functional groups and 3 grafting sites (considering the symmetries of site-4 and site-6). This ensures that the database construction process is not disturbed by human factors.
+ We employed artificial random sampling to generate a library of 35 non-repetitive CPyr-based molecules (`Molecular dual-target values dataset.xlsx`) from a 196-sample-space considering 7 functional groups and 3 grafting sites (considering the symmetries of site-4 and site-6). This ensures that the database construction process is not disturbed by human factors.
 
-We calculated the 50-dimensional physical properties of 7 functional groups to construct functional group characteristics space (feature set1). To mitigate the risk of multicollinearity-induced dilution effects in subsequent tree-based models, we manually removed features exhibiting physical redundancy and selected 9 electronic features and 6 geometric features to describe a functional group to prevent contribution attenuation
+We calculated the 50-dimensional physical properties of 7 functional groups to construct functional group characteristics space (`Functional group features`). To mitigate the risk of multicollinearity-induced dilution effects in subsequent tree-based models, we manually removed features exhibiting physical redundancy and selected 9 electronic features and 6 geometric features to describe a functional group to prevent contribution attenuation
 
 ## 3.3 Homogeneous ensemble of tree models
 ### 3.3.1 Hyperparameter grid search
