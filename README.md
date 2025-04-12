@@ -21,7 +21,8 @@ This page contains three databases:
 1. `Molecular dual-target values dataset.xlsx`: Two target values for the set of 35 molecules: 1). The HOMO-LUMO energy gap of diverse modified PyrSLi-Li₂S₄ complexes (designated as PyrMSLi-Li₂S₄) serves as target value 1; 2). The SNAr energy barrier between CPyr-based molecules and S₆Li⁻ functions as target value 2.
 2. `Functional group features.xlsx`：50-dimensional features with strong physical significance for seven functional groups, calculated by quantum chemistry, are processed. After manually removing features with redundant physical meaning, 15-dimensional data are selected for subsequent work.
 3. `Final dataset.xlsx`：The database construction method of 45-dimensional features composed of three sites 4, 5, and 6 and dual target values is shown for subsequent model training.
-Four Jupyter Notebook:
+
+Five Jupyter Notebook:
 1. `tree_voting_tunning.ipynb`/`linear_voting_tunning.ipynb`: Hyperparameter tuning process of six sub-models based on tree/linear models.
 2. `tree_voting_ensemble.ipynb`/`linear_voting_tunning.ipynb`: Model screening and integration of six sub-models based on tree/linear models, and calculation and output of feature importance after multiple traversals.
 3. `noise.ipynb`: According to the size of the standard deviation of the original data, introduce gaussian noise of appropriate intensity for data augmentation.
@@ -40,7 +41,7 @@ To avoid the overfitting issue in the case of small sample size, we make full us
 
 $$ f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-μ)^2}{2\sigma^2}} $$
 
-Among them,σ is the standard deviation of Gaussian noise, μ is the mean value of Gaussian noise.
+Among them, σ is the standard deviation of Gaussian noise, μ is the mean value of Gaussian noise.
 
 ```python
 df = pd.read_excel('Data Augmentation4.xlsx')
@@ -63,7 +64,7 @@ noisy_data.to_excel('new_database.xlsx', index=False)
 
 ## 3.4 Homogeneous ensemble of tree models
 ### 3.4.1 Hyperparameter grid search
-To enhance the model’s generalization ability and robustness while maintaining interpretability of tree model, we selected six widely used tree-based models as sub-models: Random Forest (RF), Gradient Boosting Regression Tree (GBRT), CatBoost Regression (CBR), AdaBoost Regression (ABR), XGBoost Regression (XGBR), and LightGBM (LGBM). For each sub-model, the optimal hyperparameters were identified via grid search optimization guided by the coefficient of determination $$R^2$$ evaluation metric. 
+To enhance the model’s generalization ability and robustness while maintaining interpretability of tree model, we selected six widely used tree-based models as sub-models: Random Forest (RF), Gradient Boosting Regression Tree (GBRT), CatBoost Regression (CBR), AdaBoost Regression (ABR), XGBoost Regression (XGBR), and LightGBM (LGBM). For each sub-model, the optimal hyperparameters were identified via grid search optimization guided by the coefficient of determination $$R^2$$ evaluation metric (`tree_voting_tunning.ipynb`). 
 
 The $$R^2$$ and Root-Mean-Square Error are employed to reflect the prediction accuracy, which are defined as: 
 
@@ -151,7 +152,7 @@ for name, grid in grid_searches.items():
 ```
 
 ### 3.4.2 Homogeneous integration and calculation of weighted average feature importance
-After finding the optimal hyperparameters for each sub-model, we first construct a model dictionary to initialize the model and inject the found optimal hyperparameters into the model. Then, we perform model integration through Voting Regression and gradually eliminate the worst-performing model (we have reserved an interface at the definition of the model dictionary and can conveniently eliminate models by commenting out specific sub-models). This process continues until the performance of the fusion model is higher than that of all sub-models. For the analysis of model feature importance, to address variations in feature importance magnitudes across different tree models, we normalized the feature importance values of each sub-model. The R2 value of each sub-model in a single training was used as a weight to compute a weighted average of the feature importance, which was assigned as the fusion model’s feature importance for that iteration.
+After finding the optimal hyperparameters for each sub-model, we first construct a model dictionary to initialize the model and inject the found optimal hyperparameters into the model. Then, we perform model integration through Voting Regression and gradually eliminate the worst-performing model (we have reserved an interface at the definition of the model dictionary and can conveniently eliminate models by commenting out specific sub-models). This process continues until the performance of the fusion model is higher than that of all sub-models. For the analysis of model feature importance, to address variations in feature importance magnitudes across different tree models, we normalized the feature importance values of each sub-model. The R2 value of each sub-model in a single training was used as a weight to compute a weighted average of the feature importance, which was assigned as the fusion model’s feature importance for that iteration (`tree_voting_parameter.ipynb`).
 ```python
 # Define a function to initialize the model dictionary.
 def initialize_best_estimators(grid_searches):
