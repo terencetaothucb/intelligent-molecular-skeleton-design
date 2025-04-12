@@ -17,7 +17,7 @@ Molecular mediators have demonstrated broad applicability in the electrolyte che
 
 # 3. Experiment
 ## 3.1 Overview
-This repository contains three databases:
+This page contains three databases:
 1. `Molecular dual-target values dataset.xlsx`: Two target values for the set of 35 molecules: 1). The HOMO-LUMO energy gap of diverse modified PyrSLi-Li₂S₄ complexes (designated as PyrMSLi-Li₂S₄) serves as target value 1; 2). The SNAr energy barrier between CPyr-based molecules and S₆Li⁻ functions as target value 2.
 2. `Functional group features.xlsx`：50-dimensional features with strong physical significance for seven functional groups, calculated by quantum chemistry, are processed. After manually removing features with redundant physical meaning, 15-dimensional data are selected for subsequent work.
 3. `Final dataset.xlsx`：The database construction method of 45-dimensional features composed of three sites 4, 5, and 6 and dual target values is shown for subsequent model training.
