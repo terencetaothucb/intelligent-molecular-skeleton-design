@@ -22,7 +22,7 @@ This page contains three databases:
 2. `Functional group features.xlsx`：50-dimensional features with strong physical significance for seven functional groups, calculated by quantum chemistry, are processed. After manually removing features with redundant physical meaning, 15-dimensional data are selected for subsequent work.
 3. `Final dataset.xlsx`：The database construction method of 45-dimensional features composed of three sites 4, 5, and 6 and dual target values is shown for subsequent model training.
 
-Five Jupyter Notebook:
+Five Jupyter Notebooks:
 1. `tree_voting_tunning.ipynb`/`linear_voting_tunning.ipynb`: Hyperparameter tuning process of six sub-models based on tree/linear models.
 2. `tree_voting_ensemble.ipynb`/`linear_voting_tunning.ipynb`: Model screening and integration of six sub-models based on tree/linear models, and calculation and output of feature importance after multiple traversals.
 3. `noise.ipynb`: According to the size of the standard deviation of the original data, introduce gaussian noise of appropriate intensity for data augmentation.
