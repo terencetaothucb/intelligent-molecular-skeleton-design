@@ -13,10 +13,24 @@ Molecular mediators have demonstrated broad applicability in the electrolyte che
 * scipy=1.13.1pandas=2.2.2
 
 # 2. Datasets
-* Raw and processed datasets have been deposited in `Molecular dual-target values dataset.xlsx`，`Functional group features`, which can be accessed at this page.
+* Raw and processed datasets have been deposited in `Molecular dual-target values dataset.xlsx`，`Functional group features.xlsx`, which can be accessed at this page.
 
 # 3. Experiment
 ## 3.1 Overview
+This repository contains three databases:
+1. `Molecular dual-target values dataset.xlsx`: Two target values for the set of 35 molecules: 1). The HOMO-LUMO energy gap of diverse modified PyrSLi-Li₂S₄ complexes (designated as PyrMSLi-Li₂S₄) serves as target value 1; 2). The SNAr energy barrier between CPyr-based molecules and S₆Li⁻ functions as target value 2.
+2. `Functional group features.xlsx`：50-dimensional features with strong physical significance for seven functional groups, calculated by quantum chemistry, are processed. After manually removing features with redundant physical meaning, 15-dimensional data are selected for subsequent work.
+3. `Final dataset`：The database construction method of 45-dimensional features composed of three sites 4, 5, and 6 and dual target values is shown for subsequent model training.
+Four Jupyter Notebook:
+1. `tree_voting_tunning.ipynb`/`linear_voting_tunning.ipynb`: Hyperparameter tuning process of six sub-models based on tree/linear models.
+2. `tree_voting_ensemble.ipynb`/`linear_voting_tunning.ipynb`: Model screening and integration of six sub-models based on tree/linear models, and calculation and output of feature importance after multiple traversals.
+
+In this research, a dual-target value database for 35 Pyr - based molecules was constructed using a quantum-chemical calculation framework. The two targets are: 1. The HOMO - LUMO energy gap of PyrMSLi - Li₂S₄; 2. The SNAr energy barrier between CPyr - based molecules and S₆Li⁻ functions. Wave function analysis was carried out via Multiwfn to construct 50-dimensional features with strong physical significance for seven functional groups. The structure-activity relationships between the molecular skeleton design and the two target values were explored within the chemical space composed of 196 molecules. Model analysis was further employed to reveal the underlying physical implications of the grafting of functional groups on the overall molecules.
+
+Regarding model construction, to enhance the generalization performance of the model while retaining the interpretability of tree-based models, six common tree models were integrated. To synthesize the perspectives of each sub-model, the coefficient of determination \(R^{2}\) of each sub-model was used as the weight, and the weighted-average result was taken as the feature importance of the fused model. To avoid the high contingency resulting from a single training, different dataset partitions (random seeds: 0-99) were traversed, and 7-fold cross-validation was applied in each partition to ensure the reliability of revealing the underlying physical significance.
+
+Subsequently, to gain an in-depth understanding of the impact of physical features on molecular properties, the top - ranked features of the two objective values were extracted and coefficients were obtained through a linear model to construct descriptors for the two objective values. These descriptors exhibited a remarkably good linear relationship with the quantum-chemical calculation values. The proposed strategy identified 2-chloro-4-(trifluoromethyl)pyrimidine as an optimal pre-mediator among 196 candidates. This enables Li-S batteries to achieve a capacity retention of 85% over 800 cycles, together with an exceptional gravimetric energy density of 506 Wh kg−1 in a 11.6-Ah-level pouch cell.
+   
 The main workflow includes the construction of two types of homogeneous ensemble models (including six tree models or six linear models) and the calculation of the multi-model strongly physically meaningful weighted average feature importance.
 ## 3.2 Construction of chemical space
 We randomly chosen 34 non-repetitive CPyr-based molecules along with basic CPyr to generate a library of 35 non-repetitive CPyr-based molecules (`Molecular dual-target values dataset.xlsx`) from a 196-sample-space considering 7 functional groups and 3 grafting sites (considering the symmetries of site-4 and site-6).
@@ -248,6 +262,26 @@ print(f"{feature}: {importance}")
 
 ## 3.4 Homogeneous integration of linear models 
 For the construction of descriptors，we identified the top-ranked features across different sites as strong correlation factors and used them to construct functional group indexes. We utilized six common linear models as sub-models: Linear Regression (LR), Ridge Regression (RR), Least Angle Regression (LAR), Elastic Net Regression (ENR), Partial Least Squares Regression (PLSR), and Support Vector Regression (SVR). Except for setting the kernel to linear in SVR, we retain the default values for all other hyperparameters (But we still reserve an interface to implement custom hyperparameters). The homogeneous integration process of linear models is similar to the above process. For details, see `linear_voting_tunning.ipynb`，`linear_voting_ensemble.ipynb`.
+
+## 3.5 The detailed description of electronic and geometric features used in this work
+| Feature Type        | Feature                          | Abbreviations      | Description                                                                 |
+|---------------------|----------------------------------|--------------------|-----------------------------------------------------------------------------|
+| ​**​Electronic Features​**​ | Average electronegativity       | $\overline{EN}$    | Mean value of Pauling electronegativity of all atoms                        |
+|                     | Chemical potential              | $\mu$              | The electron energy in HOMO                                                |
+|                     | Hardness                         | $H$                | The ability to resist changes in electron density                          |
+|                     | Electrophilicity index           | $I_E$              | An indicator of the ability to attract electrons                           |
+|                     | Nucleophilicity index            | $I_N$              | An indicator of the ability to supply electrons                            |
+|                     | Average bond order               | $\overline{BO}$    | Mean value of all bond orders                                               |
+|                     | Minimal value                    | $\varphi_{min}$    | Minimum value of van der Waals surface electrostatic potential             |
+|                     | Maximal value                    | $\varphi_{max}$    | Maximum value of van der Waals surface electrostatic potential             |
+|                     | Molecular polarity index         | $P_M$              | Degree of charge separation within functional groups                        |
+| ​**​Geometric Features​**​ | Volume                          | $V$                | Volume of van der Waals surface                                             |
+|                     | M/V                             | M/V                | Density of Functional Groups (Total Atomic Weight/Volume)                   |
+|                     | Sphericity                      | $S$                | Degree of the geometric configuration's approximation to a spherical shape |
+|                     | Overall surface area            | $A_S$              | The surface area of a van der Waals surface                                 |
+|                     | Distance between Pyrimidine and maximum | $d_{Pyr - \varphi_{max}}$ | Distance between maximum point of electrostatic potential and center of pyrimidine |
+|                     | Distance between Pyrimidine and minimum | $d_{Pyr - \varphi_{min}}$ | Distance between minimum point of electrostatic potential and center of pyrimidine |
+
 
 # 4. Access
 Data and code are under [MIT licence](https://github.com/terencetaothucb/intelligent-molecular-skeleton-design/blob/main/LICENSE). Correspondence to [Guangmin Zhou](mailto:guangminzhou@sz.tsinghua.edu.cn) and Prof. [Xuan Zhang](mailto:xuanzhang@sz.tsinghua.edu.cn) when you use, or have any inquiries.
