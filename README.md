@@ -31,7 +31,6 @@ Regarding model construction, to enhance the generalization performance of the m
 
 Subsequently, to gain an in-depth understanding of the impact of physical features on molecular properties, the top - ranked features of the two objective values were extracted and coefficients were obtained through a linear model to construct descriptors for the two objective values. These descriptors exhibited a remarkably good linear relationship with the quantum-chemical calculation values. The proposed strategy identified 2-chloro-4-(trifluoromethyl)pyrimidine as an optimal pre-mediator among 196 candidates. This enables Li-S batteries to achieve a capacity retention of 85% over 800 cycles, together with an exceptional gravimetric energy density of 506 Wh kg−1 in a 11.6-Ah-level pouch cell.
    
-The main workflow includes the construction of two types of homogeneous ensemble models (including six tree models or six linear models) and the calculation of the multi-model strongly physically meaningful weighted average feature importance.
 ## 3.2 Construction of chemical space
 We randomly chosen 34 non-repetitive CPyr-based molecules along with basic CPyr to generate a library of 35 non-repetitive CPyr-based molecules (`Molecular dual-target values dataset.xlsx`) from a 196-sample-space considering 7 functional groups and 3 grafting sites (considering the symmetries of site-4 and site-6).
 
