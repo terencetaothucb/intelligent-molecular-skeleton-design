@@ -20,24 +20,49 @@ Molecular mediators have demonstrated broad applicability in the electrolyte che
 This repository contains three databases:
 1. `Molecular dual-target values dataset.xlsx`: Two target values for the set of 35 molecules: 1). The HOMO-LUMO energy gap of diverse modified PyrSLi-Li₂S₄ complexes (designated as PyrMSLi-Li₂S₄) serves as target value 1; 2). The SNAr energy barrier between CPyr-based molecules and S₆Li⁻ functions as target value 2.
 2. `Functional group features.xlsx`：50-dimensional features with strong physical significance for seven functional groups, calculated by quantum chemistry, are processed. After manually removing features with redundant physical meaning, 15-dimensional data are selected for subsequent work.
-3. `Final dataset`：The database construction method of 45-dimensional features composed of three sites 4, 5, and 6 and dual target values is shown for subsequent model training.
+3. `Final dataset.xlsx`：The database construction method of 45-dimensional features composed of three sites 4, 5, and 6 and dual target values is shown for subsequent model training.
 Four Jupyter Notebook:
 1. `tree_voting_tunning.ipynb`/`linear_voting_tunning.ipynb`: Hyperparameter tuning process of six sub-models based on tree/linear models.
 2. `tree_voting_ensemble.ipynb`/`linear_voting_tunning.ipynb`: Model screening and integration of six sub-models based on tree/linear models, and calculation and output of feature importance after multiple traversals.
-
-In this research, a dual-target value database for 35 Pyr - based molecules was constructed using a quantum-chemical calculation framework. The two targets are: 1. The HOMO - LUMO energy gap of PyrMSLi - Li₂S₄; 2. The SNAr energy barrier between CPyr - based molecules and S₆Li⁻ functions. Wave function analysis was carried out via Multiwfn to construct 50-dimensional features with strong physical significance for seven functional groups. The structure-activity relationships between the molecular skeleton design and the two target values were explored within the chemical space composed of 196 molecules. Model analysis was further employed to reveal the underlying physical implications of the grafting of functional groups on the overall molecules.
-
+3. `noise.ipynb`: According to the size of the standard deviation of the original data, introduce gaussian noise of appropriate intensity for data augmentation.
+   
+In this research, a dual-target value database for 35 Pyr-based molecules was constructed using a quantum-chemical calculation framework. The two targets are: 1. The HOMO-LUMO energy gap of PyrMSLi-Li₂S₄; 2. The SNAr energy barrier between CPyr-based molecules and S₆Li⁻ functions. Wave function analysis was carried out via Multiwfn to construct 50-dimensional features with strong physical significance for seven functional groups. The structure-activity relationships between the molecular skeleton design and the two target values were explored within the chemical space composed of 196 molecules. Model analysis was further employed to reveal the underlying physical implications of the grafting of functional groups on the overall molecules.
 Regarding model construction, to enhance the generalization performance of the model while retaining the interpretability of tree-based models, six common tree models were integrated. To synthesize the perspectives of each sub-model, the coefficient of determination \(R^{2}\) of each sub-model was used as the weight, and the weighted-average result was taken as the feature importance of the fused model. To avoid the high contingency resulting from a single training, different dataset partitions (random seeds: 0-99) were traversed, and 7-fold cross-validation was applied in each partition to ensure the reliability of revealing the underlying physical significance.
-
-Subsequently, to gain an in-depth understanding of the impact of physical features on molecular properties, the top - ranked features of the two objective values were extracted and coefficients were obtained through a linear model to construct descriptors for the two objective values. These descriptors exhibited a remarkably good linear relationship with the quantum-chemical calculation values. The proposed strategy identified 2-chloro-4-(trifluoromethyl)pyrimidine as an optimal pre-mediator among 196 candidates. This enables Li-S batteries to achieve a capacity retention of 85% over 800 cycles, together with an exceptional gravimetric energy density of 506 Wh kg−1 in a 11.6-Ah-level pouch cell.
+Subsequently, to gain an in-depth understanding of the impact of physical features on molecular properties, the top-ranked features of the two objective values were extracted and coefficients were obtained through a linear model to construct descriptors for the two objective values. These descriptors exhibited a remarkably good linear relationship with the quantum-chemical calculation values. The proposed strategy identified 2-chloro-4-(trifluoromethyl)pyrimidine as an optimal pre-mediator among 196 candidates. This enables Li-S batteries to achieve a capacity retention of 85% over 800 cycles, together with an exceptional gravimetric energy density of 506 Wh kg−1 in a 11.6-Ah-level pouch cell.
    
 ## 3.2 Construction of chemical space
 We randomly chosen 34 non-repetitive CPyr-based molecules along with basic CPyr to generate a library of 35 non-repetitive CPyr-based molecules (`Molecular dual-target values dataset.xlsx`) from a 196-sample-space considering 7 functional groups and 3 grafting sites (considering the symmetries of site-4 and site-6).
 
-We calculated the 50-dimensional physical properties of 7 functional groups to construct functional group characteristics space (`Functional group features.xlsx`). To mitigate the risk of multicollinearity-induced dilution effects in subsequent tree-based models, we manually removed features exhibiting physical redundancy and selected 9 electronic features and 6 geometric features to describe a functional group to prevent contribution attenuation.
+We calculated the 50-dimensional physical properties of 7 functional groups to construct functional group characteristics space (`Functional group features.xlsx`). To mitigate the risk of multicollinearity-induced dilution effects in subsequent tree-based models, we manually removed features exhibiting physical redundancy and selected 9 electronic features and 6 geometric features to describe a functional group to prevent contribution attenuation (For details, see 3.6).
 
-## 3.3 Homogeneous ensemble of tree models
-### 3.3.1 Hyperparameter grid search
+## 3.3 Data augmentation
+To avoid the overfitting issue in the case of small sample size, we make full use of the symmetry of the site-4 and site-6 of CPyr-based molecules. Specifically, we carried out initial data enhancement by exchanging the functional groups on site-4 and site-6 in the database. In addition, We introduce extra data containing Gaussian noise (`noise.ipynb`), with the same quantity as the original data to perform secondary data enhancement, thereby further reducing the risk of overfitting. We determine the intensity of Gaussian noise by calculating the standard deviation of each feature or target value in the training set. Specifically, we introduce Gaussian noise with a mean of 0 and a standard deviation equal to 0.1 times the standard deviation of the original data column in the original dataset, following the normal distribution below. 
+
+$$ f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-μ)^2}{2\sigma^2}} $$
+
+Among them,σ is the standard deviation of Gaussian noise, μ is the mean value of Gaussian noise.
+
+```python
+df = pd.read_excel('Data Augmentation4.xlsx')
+
+# Calculate the standard deviation of each feature.
+std_devs = df.iloc[:, 1:].std()
+# std_devs = 1
+
+# Define the standard deviation multiple of noise.
+noise_multiplier = 0.1
+
+# Generate Gaussian noise
+noisy_data = df.copy()
+for col_name, std_dev in std_devs.items():
+    noise = np.random.normal(0, std_dev * noise_multiplier, df.shape[0])
+    noisy_data[col_name] += noise
+
+noisy_data.to_excel('new_database.xlsx', index=False)
+```
+
+## 3.4 Homogeneous ensemble of tree models
+### 3.4.1 Hyperparameter grid search
 To enhance the model’s generalization ability and robustness while maintaining interpretability of tree model, we selected six widely used tree-based models as sub-models: Random Forest (RF), Gradient Boosting Regression Tree (GBRT), CatBoost Regression (CBR), AdaBoost Regression (ABR), XGBoost Regression (XGBR), and LightGBM (LGBM). For each sub-model, the optimal hyperparameters were identified via grid search optimization guided by the coefficient of determination $$R^2$$ evaluation metric. 
 
 The $$R^2$$ and Root-Mean-Square Error are employed to reflect the prediction accuracy, which are defined as: 
@@ -125,7 +150,7 @@ for name, grid in grid_searches.items():
     print(f"{name} best parameters: {grid.best_params_}")
 ```
 
-### 3.3.2 Homogeneous integration and calculation of weighted average feature importance
+### 3.4.2 Homogeneous integration and calculation of weighted average feature importance
 After finding the optimal hyperparameters for each sub-model, we first construct a model dictionary to initialize the model and inject the found optimal hyperparameters into the model. Then, we perform model integration through Voting Regression and gradually eliminate the worst-performing model (we have reserved an interface at the definition of the model dictionary and can conveniently eliminate models by commenting out specific sub-models). This process continues until the performance of the fusion model is higher than that of all sub-models. For the analysis of model feature importance, to address variations in feature importance magnitudes across different tree models, we normalized the feature importance values of each sub-model. The R2 value of each sub-model in a single training was used as a weight to compute a weighted average of the feature importance, which was assigned as the fusion model’s feature importance for that iteration.
 ```python
 # Define a function to initialize the model dictionary.
@@ -195,7 +220,7 @@ def evaluate_models(seed, X, Y, grid_searches, submodel_r2_sums, submodel_rmse_s
 }
 ```
 
-### 3.3.3 Traversal of random seeds from 0 to 99.
+### 3.4.3 Traversal of random seeds from 0 to 99.
 To mitigate single-training bias, we adjusted the dataset partition and iterated over random seeds from 0 to 99. The feature importance values from 100 training iterations were arithmetically averaged to obtain the final feature importance, which are defined as:
 
 $$\ FI_i = \frac{1}{100} \sum_{t=0}^{99} \left( \frac{\sum_{m=1}^M R^{2^{(t,m)}} f_{i_i}^{(t,m)}}{\sum_{m=1}^M R^{2^{(t,m)}}} \right) \$$
@@ -231,7 +256,7 @@ avg_weighted_feature_importances = weighted_feature_importances_sums / len(seeds
 sorted_feature_importances = sorted(zip(X.columns, avg_weighted_feature_importances), key=lambda x: x[1], reverse=True)
 ```
 
-### 3.3.4 Results output
+### 3.4.4 Results output
 Finally, output the R2 and RMSE of each sub-model and the fusion model. Sort the feature importance of the weighted average output of the fusion model under the last 100 random seeds.
 ```python
 # Output the R2, RMSE of the fusion model and each sub-model and the sorted feature importance.
@@ -259,10 +284,10 @@ for feature, importance in sorted_feature_importances:
 print(f"{feature}: {importance}")
 ```
 
-## 3.4 Homogeneous integration of linear models 
+## 3.5 Homogeneous integration of linear models 
 For the construction of descriptors，we identified the top-ranked features across different sites as strong correlation factors and used them to construct functional group indexes. We utilized six common linear models as sub-models: Linear Regression (LR), Ridge Regression (RR), Least Angle Regression (LAR), Elastic Net Regression (ENR), Partial Least Squares Regression (PLSR), and Support Vector Regression (SVR). Except for setting the kernel to linear in SVR, we retain the default values for all other hyperparameters (But we still reserve an interface to implement custom hyperparameters). The homogeneous integration process of linear models is similar to the above process. For details, see `linear_voting_tunning.ipynb`，`linear_voting_ensemble.ipynb`.
 
-## 3.5 The detailed description of electronic and geometric features used in this work
+## 3.6 The detailed description of electronic and geometric features used in this work
 | Feature Type        | Feature                          | Abbreviations      | Description                                                                 |
 |---------------------|----------------------------------|--------------------|-----------------------------------------------------------------------------|
 | ​**​Electronic Features​**​ | Average electronegativity       | $\overline{EN}$    | Mean value of Pauling electronegativity of all atoms                        |
