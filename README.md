@@ -7,13 +7,13 @@ Molecular mediators have demonstrated broad applicability in the electrolyte che
 ## 1.2 Python requirements
 * python=3.12
 * numpy=1.26.4
-* tensorflow=2.15.0matplotlib=3.8.4
-* keras=2.15.0scipy=1.14.1
-* matplotlib=3.9.0scikit-learn=1.4
-* scipy=1.13.1pandas=2.2.2
+* matplotlib=3.8.4
+* scipy=1.14.1
+* scikit-learn=1.4
+* pandas=2.2.2
 
 # 2. Datasets
-* Raw and processed datasets have been deposited in `Molecular dual-target values dataset.xlsx`，`Functional group features.xlsx`, which can be accessed at this page.
+* Raw and processed datasets have been deposited in `Molecular dual-target values dataset.xlsx`, `Functional group features.xlsx`, and `Final dataset.xlsx` which can be accessed at this page.
 
 # 3. Experiment
 ## 3.1 Overview
