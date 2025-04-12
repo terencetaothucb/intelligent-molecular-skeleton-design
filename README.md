@@ -250,7 +250,7 @@ print(f"{feature}: {importance}")
 For the construction of descriptors，we identified the top-ranked features across different sites as strong correlation factors and used them to construct functional group indexes. We utilized six common linear models as sub-models: Linear Regression (LR), Ridge Regression (RR), Least Angle Regression (LAR), Elastic Net Regression (ENR), Partial Least Squares Regression (PLSR), and Support Vector Regression (SVR). Except for setting the kernel to linear in SVR, we retain the default values for all other hyperparameters (But we still reserve an interface to implement custom hyperparameters). The homogeneous integration process of linear models is similar to the above process. For details, see `linear_voting_tunning.ipynb`，`linear_voting_ensemble.ipynb`.
 
 # 4. Access
-Data and code are under [MIT licence](https://github.com/terencetaothucb/intelligent-molecular-skeleton-design/blob/main/LICENSE). Correspondence to [Guangmin Zhou](guangminzhou@sz.tsinghua.edu.cn) and Prof. [Xuan Zhang](xuanzhang@sz.tsinghua.edu.cn) when you use, or have any inquiries.
+Data and code are under [MIT licence](https://github.com/terencetaothucb/intelligent-molecular-skeleton-design/blob/main/LICENSE). Correspondence to [Guangmin Zhou](mailto:guangminzhou@sz.tsinghua.edu.cn) and Prof. [Xuan Zhang](mailto:xuanzhang@sz.tsinghua.edu.cn) when you use, or have any inquiries.
 
 # 5. Acknowledgements
 [Yifei Zhu](zhuyifeiedu@126.com) and [Terence (Shengyu) Tao](mailto:terencetaotbsi@gmail.com) at Tsinghua University conceived and formulated the algorithms, deposited model/experimental code, and authored this guideline document drawing on supplementary materials.
