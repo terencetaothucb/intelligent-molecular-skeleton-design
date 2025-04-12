@@ -294,7 +294,7 @@ A CPyr molecule has three grafting sites. To quantify the influence of functiona
 | Feature Type        | Feature                          | Abbreviations      | Description                                                                 |
 |---------------------|----------------------------------|--------------------|-----------------------------------------------------------------------------|
 | ​**​Electronic Features​**​ | Average electronegativity       | $\overline{EN}$    | Mean value of Pauling electronegativity of all atoms                        |
-|                     | Chemical potential              | $\mu$              | The electron energy in HOMO                                                |
+|                     | Chemical potential              | $\mu$              | the mean of the energies of HOMO and LUMO                                         |
 |                     | Hardness                         | $H$                | The ability to resist changes in electron density                          |
 |                     | Electrophilicity index           | $I_E$              | An indicator of the ability to attract electrons                           |
 |                     | Nucleophilicity index            | $I_N$              | An indicator of the ability to supply electrons                            |
